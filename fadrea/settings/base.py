@@ -12,10 +12,12 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 
 import environ
 import datetime
+import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 ROOT_DIR = environ.Path(__file__) - 3
 APPS_DIR = ROOT_DIR
+
 
 env = environ.Env()
 READ_DOT_ENV_FILE = env.bool('DJANGO_READ_DOT_ENV_FILE', default=False)
@@ -142,7 +144,7 @@ STATIC_URL = '/static/'
 STATIC_ROOT = str(ROOT_DIR('staticfiles'))
 
 STATICFILES_DIRS = (
-    str(APPS_DIR.path('static')),
+    os.path.join(str(ROOT_DIR), 'static'),
 )
 
 STATICFILES_FINDERS = (
