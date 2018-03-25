@@ -125,7 +125,7 @@ AUTH_USER_MODEL = 'api.Profile'
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'nl-be'
 
 TIME_ZONE = 'Europe/Brussels'
 
@@ -134,17 +134,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.10/howto/static-files/
-#
-# STATIC_URL = '/static/'
-#
-# STATIC_ROOT = str(ROOT_DIR('staticfiles'))
-#
-# STATICFILES_DIRS = (
-#     os.path.join(str(ROOT_DIR), 'static'),
-# )
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
