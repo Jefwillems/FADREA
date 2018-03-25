@@ -18,7 +18,6 @@ import os
 ROOT_DIR = environ.Path(__file__) - 3
 APPS_DIR = ROOT_DIR
 
-
 env = environ.Env()
 READ_DOT_ENV_FILE = env.bool('DJANGO_READ_DOT_ENV_FILE', default=False)
 
@@ -138,19 +137,26 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
+#
+# STATIC_URL = '/static/'
+#
+# STATIC_ROOT = str(ROOT_DIR('staticfiles'))
+#
+# STATICFILES_DIRS = (
+#     os.path.join(str(ROOT_DIR), 'static'),
+# )
 
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/1.9/howto/static-files/
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 
-STATIC_ROOT = str(ROOT_DIR('staticfiles'))
-
+# Extra places for collectstatic to find static files.
 STATICFILES_DIRS = (
-    os.path.join(str(ROOT_DIR), 'static'),
+    os.path.join(BASE_DIR, 'static'),
 )
-
-# STATICFILES_FINDERS = (
-#     'django.contrib.staticfiles.finders.FileSystemFinder',
-#     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-# )
 
 MEDIA_URL = '/media/'
 
