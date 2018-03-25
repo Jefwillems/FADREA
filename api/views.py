@@ -1,7 +1,7 @@
 from rest_framework import permissions
 from rest_framework import viewsets
 
-from api.models import Profile
+from usermanagement.models import Profile
 from api.serializers import ProfileSerializer
 
 

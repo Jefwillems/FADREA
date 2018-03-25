@@ -1,8 +1,8 @@
 {% extends 'main/base.html' %}
 {% load static %}
 {% block styles %}
-    <link rel="stylesheet" href="{% static 'main/css/index.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'main/css/index.css' %}">
 {% endblock %}
 {% block content %}
-    <h2>INDEX</h2>
+    <a href="{% url 'game' %}">play our game!</a>
 {% endblock %}

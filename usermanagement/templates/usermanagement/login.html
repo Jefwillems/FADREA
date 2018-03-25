@@ -1,0 +1,9 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'usermanagement/styles.css' %}">
+{% endblock %}
+{% block content %}
+    <h1>login</h1>
+    <input type="text" name="username" id="usernameField" placeholder="username">
+{% endblock %}
