@@ -1,0 +1,13 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+    <h1>high scores</h1>
+    <a href="{% url 'game' %}">play our game!</a>
+    <br>
+    <a href="{% url 'index' %}">home</a>
+    <ul>
+        {% for score in scores %}
+            <li>{{ score }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
