@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from usermanagement.models import Profile
-from api.models import HighScores
+from main.models import HighScores
 
 
 class ProfileSerializer(serializers.HyperlinkedModelSerializer):

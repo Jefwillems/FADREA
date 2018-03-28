@@ -1,11 +1,9 @@
 from rest_framework import permissions
 from rest_framework import viewsets
-from rest_framework.renderers import BrowsableAPIRenderer
 
-from usermanagement.models import Profile
 from api.serializers import ProfileSerializer, HighscoreSerializer
-from api.models import HighScores
-from api.renderers import BrowsableAPIRendererWithoutForms
+from main.models import HighScores
+from usermanagement.models import Profile
 
 
 class UserViewSet(viewsets.ModelViewSet):
