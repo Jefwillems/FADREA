@@ -54,7 +54,8 @@ THIRD_PARTY_APPS = (
 
 LOCAL_APPS = (
     'main.apps.MainConfig',
-    'api',
+    'api.apps.ApiConfig',
+    'usermanagement.apps.UsermanagementConfig'
 )
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
@@ -122,7 +123,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-AUTH_USER_MODEL = 'api.Profile'
+AUTH_USER_MODEL = 'usermanagement.Profile'
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
@@ -156,9 +157,6 @@ MEDIA_ROOT = str(APPS_DIR('media'))
 # TODO production: handle static content on the webserver...
 
 REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
-    ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',

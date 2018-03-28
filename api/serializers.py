@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
-from api.models import Profile
+from usermanagement.models import Profile
+from api.models import HighScores
 
 
 class ProfileSerializer(serializers.HyperlinkedModelSerializer):
@@ -30,3 +31,9 @@ class ProfileSerializer(serializers.HyperlinkedModelSerializer):
         user = super().update(instance, validated_data)
         user.set_password(validated_data['password'])
         return user
+
+
+class HighscoreSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = HighScores
+        fields = ('username', 'score')
