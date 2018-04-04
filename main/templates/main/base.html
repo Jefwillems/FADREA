@@ -1,20 +1,57 @@
 {% load static %}
 <!doctype html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>FADREA</title>
-    <link rel="stylesheet" href="{% static 'main/css/global.css' %}">
+    <title>fadrea frontend</title>
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-alpha.4/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+
+    <link rel="stylesheet" href="{% static 'main/css/index.css' %}">
     {% block styles %}
 
     {% endblock %}
 </head>
-<body>
-{% block content %}
 
-{% endblock %}
+<body>
+<nav class="white">
+    <div class="nav-wrapper custom-nav">
+        <a href="#" class="brand-logo">FADREA</a>
+        <a href="#" data-target="mobile-nav" class="sidenav-trigger">
+            <i class="material-icons">menu</i>
+        </a>
+        <ul class="right hide-on-med-and-down" id="desktop-nav">
+            <li>
+                <a href="#">Residents</a>
+            </li>
+            <li>
+                <a href="#">News</a>
+            </li>
+            <li>
+                <a href="#">Home</a>
+            </li>
+            {% block nav-links %}
+
+            {% endblock %}
+        </ul>
+    </div>
+</nav>
+<ul class="sidenav" id="mobile-nav">
+
+</ul>
+<div id="main-content" class="">
+    {% block content %}
+
+    {% endblock %}
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-alpha.4/js/materialize.min.js"></script>
+<script src="{% static 'main/js/index.js' %}"></script>
 </body>
+
 </html>

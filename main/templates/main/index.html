@@ -3,6 +3,9 @@
 {% block styles %}
     <link rel="stylesheet" type="text/css" href="{% static 'main/css/index.css' %}">
 {% endblock %}
+{% block nav-links %}
+    <li><a href="#">index link</a></li>
+{% endblock %}
 {% block content %}
     <a href="{% url 'game' %}">play our game!</a>
     <br>
