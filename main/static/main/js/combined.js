@@ -45,13 +45,66 @@ console.log("### p5.collide ###"),p5.prototype._collideDebug=!1,p5.prototype.col
 var globalSettings = {
   invertColors: false,
   drawBlack: false,
-  aboutUrl: "https://github.com/Jefwillems/fish",
+  aboutUrl: "/highscore/",
   enemySpeed: 2,
   enemySize: 50,
   debug: false,
   soundOn: false,
-  postUrl: "/api/score/"
+  postUrl: "/api/score/",
+  player_base_speed: 3,
+  fish_images: [],
+  gameOver: false
 };
+
+function AnnouncementManager() {
+  this.announcements = [];
+}
+
+AnnouncementManager.prototype.draw = function() {
+  if (this.announcements.length > 0) {
+    this.announcements[0].draw();
+  }
+};
+
+AnnouncementManager.prototype.addAnnouncement = function(text) {
+  this.announcements.push(new Announcement(text, this));
+};
+
+AnnouncementManager.prototype.remove = function(announcement) {
+  var i = this.announcements.indexOf(announcement);
+  this.announcements.splice(i, 1);
+};
+
+function Announcement(text, manager) {
+  this.text = text;
+  this.manager = manager;
+  this.maxSize = 72;
+  this.textSize = 24;
+}
+
+Announcement.prototype.update = function() {
+  this.textSize += 0.5;
+  if (this.textSize >= this.maxSize) {
+    this.destroy();
+  }
+};
+
+Announcement.prototype.draw = function() {
+  this.update();
+  push();
+  fill("white");
+  stroke(this.textSize);
+  textAlign(CENTER, CENTER);
+  textSize(this.textSize);
+  text(this.text, 0, 0, width, height);
+  pop();
+};
+
+Announcement.prototype.destroy = function() {
+  this.manager.remove(this);
+};
+
+var announcementManager = new AnnouncementManager();
 
 function SoundManager() {
   this.sounds = Object.create({});
@@ -61,7 +114,9 @@ SoundManager.prototype.playSound = function(name) {
   this.sounds[name].play();
 };
 SoundManager.prototype.loopSound = function(name) {
-  this.sounds[name].loop();
+  if (!this.isPlaying(name)) {
+    this.sounds[name].loop();
+  }
 };
 SoundManager.prototype.stopSound = function(name) {
   this.sounds[name].stop();
@@ -69,85 +124,63 @@ SoundManager.prototype.stopSound = function(name) {
 SoundManager.prototype.addSound = function(name, path) {
   this.sounds[name] = loadSound(path);
 };
-SoundManager.prototype.setSpeed = function(player) {
-  this.sounds["main"].stop();
-  this.sounds["fast"].stop();
-  this.sounds["slow"].stop();
-  if (player.speed === PLAYER_BASE_SPEED) {
+SoundManager.prototype.isPlaying = function(name) {
+  return this.sounds[name].isPlaying();
+};
+SoundManager.prototype.reverse = function(player) {
+  if (this.isPlaying("reverse")) {
+    this.stopAll();
     this.loopSound("main");
-  } else if (player.speed === PLAYER_BASE_SPEED * 2) {
-    this.loopSound("fast");
-  } else if (player.speed === PLAYER_BASE_SPEED / 2) {
-    this.loopSound("slow");
   } else {
+    if (!globalSettings.gameOver) {
+      this.stopAll();
+      this.loopSound("reverse");
+    }
+  }
+};
+SoundManager.prototype.gameOver = function() {
+  this.stopAll();
+  this.loopSound("main");
+  this.playSound("schurk");
+};
+SoundManager.prototype.stopAll = function() {
+  clearTimeouts();
+  for (sound in this.sounds) {
+    if (this.isPlaying(sound)) {
+      this.stopSound(sound);
+    }
+  }
+};
+SoundManager.prototype.doublePoints = function() {
+  if (this.isPlaying("double")) {
+    this.stopAll();
     this.loopSound("main");
+  } else {
+    this.stopAll();
+    this.loopSound("double");
+  }
+};
+
+SoundManager.prototype.toggleSlow = function() {
+  if (this.isPlaying("slow")) {
+    this.stopAll();
+    this.loopSound("main");
+  } else {
+    this.stopAll();
+    this.loopSound("slow");
+  }
+};
+
+SoundManager.prototype.toggleFast = function() {
+  if (this.isPlaying("fast")) {
+    this.stopAll();
+    this.loopSound("main");
+  } else {
+    this.stopAll();
+    this.loopSound("fast");
   }
 };
 var soundManager = new SoundManager();
-
-function ExportState(gameState, score) {
-  this.gameState = gameState;
-  this.score = score;
-  this.buttons = [];
-
-  var w = width / 2;
-  var h = 50;
-  var x = width / 2 - w / 2;
-  var y = height / 2;
-  this.editText = new TextField(x, y, w, h);
-
-  y += 75;
-  this.postButton = new MenuButton(x, y, w, h);
-  this.postButton.setText("post score");
-  this.postButton.setClickHandler(() => {
-    console.log("posting score to server");
-    var username = this.editText;
-    var score = this.score;
-    var postData = {
-      username: username.text,
-      score: score
-    };
-    httpPost(
-      globalSettings.postUrl,
-      "json",
-      postData,
-      function(data) {
-        console.log(data);
-        gameState.setState(new Menu(gameState));
-      },
-      function(error) {
-        console.error(error);
-      }
-    );
-  });
-
-  this.buttons.push(this.postButton);
-  this.buttons.push(this.editText);
-}
-
-ExportState.prototype.draw = function() {
-  for (var i = 0; i < this.buttons.length; i++) {
-    this.buttons[i].draw();
-  }
-};
-
-ExportState.prototype.mouseClicked = function(mX, mY) {
-  if (wasButtonClicked(this.postButton, mX, mY)) {
-    this.postButton.click();
-  }
-};
-
-ExportState.prototype.initSound = function() {};
-
-ExportState.prototype.destroy = function() {};
-
-ExportState.prototype.keyPressed = function(btn) {
-  this.editText.keyPressed(btn);
-};
-
-ExportState.prototype.keyTyped = function(character) {
-  this.editText.keyTyped(character);
-};
 
 function TextField(x, y, w, h) {
   this.x = x;
@@ -245,6 +278,13 @@ function Seaweed() {}
 
 Seaweed.prototype.draw = function() {};
 
+var timeouts = [];
+var clearTimeouts = function() {
+  timeouts.forEach(to => {
+    clearTimeout(to);
+  });
+  timeouts = [];
+};
 var effects = [
   {
     name: "reverse",
@@ -252,11 +292,16 @@ var effects = [
       if (!player.hasEffect(this.name)) {
         player.speed *= -1;
         var n = this.name;
+        soundManager.reverse(player);
+        announcementManager.addAnnouncement("Reverse!");
         player.effectText.push(n);
-        setTimeout(function() {
-          player.speed *= -1;
-          player.removeEffect(n);
-        }, sec * 1000);
+        timeouts.push(
+          setTimeout(function() {
+            player.speed *= -1;
+            soundManager.reverse(player);
+            player.removeEffect(n);
+          }, sec * 1000)
+        );
       }
     }
   },
@@ -266,13 +311,16 @@ var effects = [
       if (!player.hasEffect(this.name)) {
         player.speed /= 2;
         var n = this.name;
-        soundManager.setSpeed(player);
+        soundManager.toggleSlow();
+        announcementManager.addAnnouncement("Slowdown!");
         player.effectText.push(n);
-        setTimeout(function() {
-          player.speed *= 2;
-          player.removeEffect(n);
-          soundManager.setSpeed(player);
-        }, sec * 1000);
+        timeouts.push(
+          setTimeout(function() {
+            player.speed *= 2;
+            player.removeEffect(n);
+            soundManager.toggleSlow();
+          }, sec * 1000)
+        );
       }
     }
   },
@@ -283,12 +331,15 @@ var effects = [
         player.speed *= 2;
         var n = this.name;
         player.effectText.push(n);
-        soundManager.setSpeed(player);
-        setTimeout(function() {
-          player.speed /= 2;
-          player.removeEffect(n);
-          soundManager.setSpeed(player);
-        }, sec * 1000);
+        soundManager.toggleFast();
+        announcementManager.addAnnouncement("Speedup!");
+        timeouts.push(
+          setTimeout(function() {
+            player.speed /= 2;
+            player.removeEffect(n);
+            soundManager.toggleFast();
+          }, sec * 1000)
+        );
       }
     }
   },
@@ -298,45 +349,28 @@ var effects = [
       if (!player.hasEffect(this.name)) {
         player.pointsMultiplier = 2;
         var n = this.name;
+        soundManager.doublePoints();
+        announcementManager.addAnnouncement("Double points!");
         player.effectText.push(n);
-        setTimeout(function() {
-          player.pointsMultiplier = 1;
-          player.removeEffect(n);
-        }, sec * 1000);
+        timeouts.push(
+          setTimeout(function() {
+            player.pointsMultiplier = 1;
+            player.removeEffect(n);
+            soundManager.doublePoints();
+          }, sec * 1000)
+        );
       }
     }
-  } /*,
-  {
-    name: "inverse colors",
-    effect: function(player, sec) {
-      if (!player.hasEffect(this.name)) {
-        globalSettings.invertColors = true;
-        setTimeout(function() {
-          globalSettings.invertColors = false;
-        }, sec * 1000);
-      }
-    }
-  } ,
-  {
-    name: "blackout",
-    effect: function(player, sec) {
-      if (!globalSettings.drawBlack) {
-        globalSettings.drawBlack = true;
-        setTimeout(function() {
-          globalSettings.drawBlack = false;
-        }, 1000);
-      }
-    }
-  }*/
+  }
 ];
 
-function Powerup() {
+function Powerup(player) {
   this.size = 25;
 
   this.img = globalSettings.powerup;
 
-  this.x = random() * width;
-  this.y = random() * height;
+  this.x = player.cX + (width / 2 * random() + 50);
+  this.y = player.cY + (height / 2 * random() + 50);
   this.direction = [random() * 2 - 1, random() * 2 - 1];
 }
 
@@ -345,8 +379,9 @@ Powerup.prototype.draw = function() {
   push();
   fill("red");
   //ellipse(this.x, this.y, this.size, this.size);
+  imageMode(CENTER);
   image(this.img, this.x, this.y, this.size * 2.23, this.size);
-  if (globalSettings.debug) ellipse(this.x, this.y, this.size, this.size);
+  if (globalSettings.debug) ellipse(this.x, this.y, this.size * 2.3, this.size);
   pop();
 };
 
@@ -374,15 +409,15 @@ Powerup.prototype.getEffect = function(score) {
 };
 
 var POWER_DURATION = 10;
-var PLAYER_BASE_SPEED = 3;
-function Player() {
+function Player(name) {
+  this.name = name;
   this.size = 20;
   this.cX = width / 2 + 30 * (random() * -2 + 1);
   this.cY = height / 2 + 30 * (random() * -2 + 1);
   this.angle = PI / 2;
   this.img = globalSettings.playerImg;
   this.movingRight = true;
-  this.speed = PLAYER_BASE_SPEED;
+  this.speed = globalSettings.player_base_speed;
   this.score = 0;
   this.effectText = [];
   this.pointsMultiplier = 1;
@@ -440,7 +475,7 @@ Player.prototype.draw = function() {
     rect(x - this.w() / 2, y - this.h() / 2, this.w(), this.h());
   push();
   textSize(32);
-  var t = "Score: " + this.score + "\n";
+  var t = this.name + "\nScore: " + this.score + "\n";
   if (this.effectText.length !== 0) {
     t += "Effects:\n";
   }
@@ -448,6 +483,9 @@ Player.prototype.draw = function() {
 
   text(t, 10, 30);
   pop();
+  if (!this.effectText.length === 0) {
+    this.resetStats();
+  }
 };
 
 /**
@@ -476,7 +514,7 @@ Player.prototype.eat = function(fish) {
   if (random() > 0.5) {
     soundManager.playSound("grom");
   }
-  fish.reset(this.size);
+  fish.reset(this);
   this.addScore();
 };
 
@@ -511,9 +549,13 @@ Player.prototype.removeEffect = function(name) {
 Player.prototype.addScore = function() {
   this.score += 1 * this.pointsMultiplier;
 };
+Player.prototype.resetStats = function() {
+  this.speed = globalSettings.player_base_speed;
+  this.pointsMultiplier = 1;
+};
 
 var jpMargin = 12;
-function Fish() {
+function Fish(imgIndex) {
   this.size = random() * 50 + 1;
   var left = random() < 0.5;
   if (left) {
@@ -522,7 +564,8 @@ function Fish() {
     this.x = width - random() * 300;
   }
   this.y = random() * height;
-  this.img = globalSettings.jeanPierre;
+  this.currentIndex = imgIndex;
+  this.img = globalSettings.fish_images[this.currentIndex];
   this.direction = [random() * 2 - 1, random() * 2 - 1];
 }
 
@@ -530,8 +573,9 @@ Fish.prototype.draw = function() {
   this.update();
   push();
   imageMode(CENTER);
-  image(this.img, this.x, this.y, this.size + jpMargin, this.size + jpMargin);
   if (globalSettings.debug) ellipse(this.x, this.y, this.size, this.size);
+  image(this.img, this.x, this.y, this.size + jpMargin, this.size + jpMargin);
+
   pop();
 };
 
@@ -553,11 +597,19 @@ Fish.prototype.update = function() {
   }
 };
 
-Fish.prototype.reset = function(playerSize) {
-  this.size = playerSize + random() * 8 - 4;
-  this.x = random() * width;
-  this.y = random() * height;
+Fish.prototype.reset = function(player) {
+  this.size = player.size + random() * 16 - 8;
+  this.x = player.cX + (width / 2 * random() + 50);
+  this.y = player.cY + (height / 2 * random() + 50);
   this.direction = [random() * 2 - 1, random() * 2 - 1];
+};
+
+Fish.prototype.nextImg = function() {
+  this.currentIndex++;
+  if (this.currentIndex >= globalSettings.fish_images.length) {
+    this.currentIndex = 0;
+  }
+  this.img = globalSettings.fish_images[this.currentIndex];
 };
 
 function Enemy() {
@@ -605,67 +657,73 @@ Enemy.prototype.draw = function() {
   pop();
 };
 
-function Game(gameState) {
+function Game(gameState, player) {
+  if (!player) {
+    gameState.setState(new UsernameState(gameState));
+  }
   this.fishes = [];
   this.powerups = [];
   this.enemies = [];
-  this.initSound();
-
-  this.layer;
-  this.MAX_POWERUP_CHANCE;
-  this.gameOver = false;
+  globalSettings.gameOver = false;
+  this.MAX_POWERUP_CHANCE = 0.2;
   this.buttons = [];
   this.gameState = gameState;
   for (var i = 0; i < 30; i++) {
-    this.fishes.push(new Fish());
+    this.fishes.push(new Fish(0));
   }
   for (var i = 0; i < random() * 8 + 3; i++) {
     this.enemies.push(new Enemy());
   }
-  this.player = new Player();
-  this.MAX_POWERUP_CHANCE = 0.2;
+  this.player = player;
 
   textSize(40);
   var t = "Main menu";
   var tW = textWidth(t);
   var bW = tW + 45;
-  this.restartBtn = new MenuButton(width / 2 - bW / 2, height / 2 + 75, bW, 50);
+  this.restartBtn = new MenuButton(width / 2 - bW / 2, height / 2, bW, 50);
   this.restartBtn.setText(t);
   this.restartBtn.setClickHandler(() => {
     this.gameState.setState(new Menu(this.gameState));
   });
   this.buttons.push(this.restartBtn);
 
-  t = "Export Score";
+  t = "Play again";
   tW = textWidth(t);
-  this.exportBtn = new MenuButton(width / 2 - bW / 2, height / 2 + 150, bW, 50);
-  this.exportBtn.setText("export score");
-  this.exportBtn.setClickHandler(() => {
-    //save("score.jpg");
-    this.gameState.setState(new ExportState(this.gameState, this.player.score));
+  this.playAgainBtn = new MenuButton(
+    width / 2 - bW / 2,
+    height / 2 + 75,
+    bW,
+    50
+  );
+  this.playAgainBtn.setText(t);
+  this.playAgainBtn.setClickHandler(() => {
+    this.gameState.setState(
+      new Game(this.gameState, new Player(this.player.name))
+    );
   });
-  this.buttons.push(this.exportBtn);
+  this.buttons.push(this.playAgainBtn);
 }
 
 Game.prototype.draw = function() {
-  if (!this.gameOver) {
+  if (!globalSettings.gameOver) {
     for (var fish of this.fishes) {
       fish.draw();
       if (this.player.canEat(fish)) {
         if (this.player.size >= fish.size) {
           this.player.eat(fish);
+          if (this.player.score % 15 === 0) {
+            this.swapFishImages();
+          }
           this.handleSpawns();
         } else {
-          this.gameOver = true;
-          soundManager.playSound("schurk");
+          this.gameOver();
         }
       }
     }
     for (var enemy of this.enemies) {
       enemy.draw();
       if (this.player.canEat(enemy)) {
-        this.gameOver = true;
-        soundManager.playSound("schurk");
+        this.gameOver();
       }
     }
     for (var i = 0; i < this.powerups.length; i++) {
@@ -682,9 +740,9 @@ Game.prototype.draw = function() {
     textAlign(CENTER, CENTER);
     var t = "Game Over!\nScore: " + this.player.score;
     var tW = textWidth(t);
-    text(t, width / 2, height / 2);
+    text(t, width / 2, height / 2 - 75);
     this.restartBtn.draw();
-    this.exportBtn.draw();
+    this.playAgainBtn.draw();
     pop();
   }
 };
@@ -693,20 +751,20 @@ Game.prototype.getChanceOfSpawningPowerup = function() {
   return round(this.player.score / 10) * 10 / 100;
 };
 
-Game.prototype.maySpawnPowerup = function(chance = MAX_POWERUP_CHANCE) {
+Game.prototype.maySpawnPowerup = function(chance) {
   if (chance > this.MAX_POWERUP_CHANCE) {
     chance = this.MAX_POWERUP_CHANCE;
   }
   var r = random();
   if (r < chance) {
-    this.powerups.push(new Powerup());
+    this.powerups.push(new Powerup(this.player));
   }
 };
 
 Game.prototype.handleSpawns = function() {
   var chance = this.getChanceOfSpawningPowerup();
   if (chance >= 1) {
-    this.maySpawnPowerup();
+    this.maySpawnPowerup(this.MAX_POWERUP_CHANCE);
   }
   chance = chance - floor(chance);
   this.maySpawnPowerup(chance);
@@ -718,10 +776,14 @@ function windowResized() {
 
 Game.prototype.mouseClicked = function(mX, mY) {
   for (var i = 0; i < this.buttons.length; i++) {
-    if (wasButtonClicked(this.buttons[i], mX, mY)) {
+    if (wasButtonClicked(this.buttons[i], mX, mY) && globalSettings.gameOver) {
       this.buttons[i].click();
     }
   }
+};
+Game.prototype.gameOver = function() {
+  globalSettings.gameOver = true;
+  soundManager.gameOver();
 };
 
 Game.prototype.initSound = function() {
@@ -732,18 +794,90 @@ Game.prototype.destroy = function() {
   soundManager.stopSound("main");
 };
 
-function TextUtil(delimiter, text = "") {
-  this.delimiter = delimiter;
-  this.text = text;
-}
-
-TextUtil.prototype.append = function(text) {
-  this.text += text + this.delimiter;
-  return this;
+Game.prototype.postScore = function() {
+  return new Promise((resolve, reject) => {
+    var username = this.editText;
+    var score = this.score;
+    var postData = { username: username.text, score: score };
+    httpPost(
+      globalSettings.postUrl,
+      "json",
+      postData,
+      function(data) {
+        console.log(data);
+        gameState.setState(new Menu(gameState));
+      },
+      function(error) {
+        console.error(error);
+      }
+    );
+  }).then(console.log);
 };
 
-TextUtil.prototype.build = function() {
-  return this.text;
+Game.prototype.swapFishImages = function() {
+  new Promise((resolve, reject) => {
+    for (let i = 0; i < this.fishes.length; i++) {
+      setTimeout(() => {
+        this.fishes[i].nextImg();
+      }, i * 20);
+    }
+  });
+};
+
+function UsernameState(gamestate) {
+  this.gamestate = gamestate;
+
+  this.elements = [];
+
+  var w = width / 2;
+  var h = 50;
+  var x = width / 2 - w / 2;
+  var y = height / 2;
+  this.editText = new TextField(x, y, w, h);
+
+  this.elements.push(this.editText);
+
+  y += 75;
+  this.playBtn = new MenuButton(x, y, w, h);
+  this.playBtn.setText("Play Game");
+  this.playBtn.setClickHandler(() => {
+    localStorage.setItem("username", this.editText.text);
+    this.gamestate.setState(
+      new Game(this.gamestate, new Player(this.editText.text))
+    );
+  });
+
+  this.elements.push(this.playBtn);
+}
+
+UsernameState.prototype.draw = function() {
+  push();
+  textSize(32);
+  textAlign(CENTER, CENTER);
+  var x = width / 2;
+  var y = height / 2 - 50;
+  text("Please enter your username", x, y);
+  pop();
+  for (var i = 0; i < this.elements.length; i++) {
+    this.elements[i].draw();
+  }
+};
+UsernameState.prototype.initSound = function() {};
+UsernameState.prototype.destroy = function() {
+  if (soundManager.isPlaying("intro")) soundManager.stopSound("intro");
+};
+
+UsernameState.prototype.keyPressed = function(btn) {
+  this.editText.keyPressed(btn);
+};
+
+UsernameState.prototype.keyTyped = function(character) {
+  this.editText.keyTyped(character);
+};
+UsernameState.prototype.mouseClicked = function(mX, mY) {
+  if (wasButtonClicked(this.playBtn, mX, mY)) {
+    this.playBtn.click();
+  }
 };
 
 function Info(gameState) {
@@ -761,21 +895,31 @@ function Info(gameState) {
     this.gameState.setState(new Menu(this.gameState));
   });
   this.buttons.push(backBtn);
-  this.text = new TextUtil("\n")
-    .append("Catch all the Van Rossems smaller than you!")
-    .append("Watch out for the {?enemy name?}")
-    .append("Control your fish with the arrow keys (sorry mobile users 😿)")
-    .build();
+
+  this.text = [
+    "During their mating season, Jean-Pierre Van Rossems tend to become profoundly aggressive.",
+    "Use the arrow keys to navigate Fadry Fish trough",
+    "hordes of libidinous, corpulent, neanderthal-like ashtrays and remember:",
+    "EAT OR BE EATEN!"
+  ];
 }
+
+Info.prototype.initSound = function() {};
 
 Info.prototype.draw = function() {
   for (var i = 0; i < this.buttons.length; i++) {
     this.buttons[i].draw();
   }
+  push();
   textSize(32);
-  textAlign(CENTER);
-  text(this.text, width / 2, (height - 100) / 2);
+  var t = this.text.join(" ");
+  textAlign(LEFT, CENTER);
+  var textMargin = width * 0.2;
+  text(t, 0 + textMargin, 0, width - textMargin * 2, height);
+  pop();
 };
+
+Info.prototype.destroy = function() {};
 
 Info.prototype.mouseClicked = function(mX, mY) {
   for (var i = 0; i < this.buttons.length; i++) {
@@ -832,7 +976,6 @@ MenuButton.prototype.click = function() {
 function Menu(gameState) {
   this.gameState = gameState;
   this.buttons = [];
-  this.initSound();
 
   //play button
   var w = width * 0.3;
@@ -843,16 +986,19 @@ function Menu(gameState) {
   var playButton = new MenuButton(x, y, w, h);
   playButton.setText("Play Game");
   playButton.setClickHandler(() => {
-    gameState.setState(new Game(this.gameState));
+    var usrn = localStorage.getItem("username");
+    if (usrn && usrn.length != 0) {
+      if (soundManager.isPlaying("intro")) soundManager.stopSound("intro");
+      this.gameState.setState(new Game(this.gameState, new Player(usrn)));
+    } else {
+      this.gameState.setState(new UsernameState(this.gameState));
+    }
   });
   this.buttons.push(playButton);
 
-  //about button
-  var aboutW = w / 2 - 25;
-  var aboutY = y + h + 25;
-
-  var aboutButton = new MenuButton(x, aboutY, aboutW, h);
-  aboutButton.setText("About");
+  // highscores button
+  var aboutButton = new MenuButton(x, y + 75, w, h);
+  aboutButton.setText("Highscores");
   aboutButton.setClickHandler(() => {
     var win = window.open(globalSettings.aboutUrl, "_blank");
     win.focus();
@@ -860,16 +1006,23 @@ function Menu(gameState) {
   this.buttons.push(aboutButton);
 
   // info button
-  var infoX = x + w - aboutW;
-  var infoBtn = new MenuButton(infoX, aboutY, aboutW, h);
+  var infoBtn = new MenuButton(x, y + 150, w, h);
   infoBtn.setText("Info");
   infoBtn.setClickHandler(() => {
     gameState.setState(new Info(this.gameState));
   });
   this.buttons.push(infoBtn);
+
+  this.title = "Fadry Fish";
 }
 
 Menu.prototype.draw = function() {
+  push();
+  textSize(124);
+  textAlign(CENTER, CENTER);
+  textFont("Palatino");
+  text(this.title, 0, 0, width, height / 2);
+  pop();
   for (var i = 0; i < this.buttons.length; i++) {
     this.buttons[i].draw();
   }
@@ -887,9 +1040,7 @@ Menu.prototype.initSound = function() {
   soundManager.loopSound("intro");
 };
 
-Menu.prototype.destroy = function() {
-  soundManager.stopSound("intro");
-};
+Menu.prototype.destroy = function() {};
 
 var wasButtonClicked = function(button, mX, mY) {
   return collidePointRect(mX, mY, button.x, button.y, button.w, button.h);
@@ -899,7 +1050,13 @@ function GameState() {
   this.soundOnImg = globalSettings.soundOnImg;
   this.soundOffImg = globalSettings.soundOffImg;
   this.state = new Menu(this);
-  if (!globalSettings.soundOn) {
+  this.state.initSound();
+  var soundOn =
+    localStorage.getItem("soundOn") === "true" ||
+    localStorage.getItem("soundOn") === null;
+
+  globalSettings.soundOn = soundOn;
+  if (!soundOn) {
     masterVolume(0.0);
   }
 }
@@ -919,6 +1076,7 @@ GameState.prototype.draw = function() {
 GameState.prototype.setState = function(s) {
   this.state.destroy();
   this.state = s;
+  this.state.initSound();
 };
 
 GameState.prototype.mouseClicked = function(mX, mY) {
@@ -926,8 +1084,10 @@ GameState.prototype.mouseClicked = function(mX, mY) {
     globalSettings.soundOn = !globalSettings.soundOn;
     if (globalSettings.soundOn) {
       masterVolume(1.0);
+      localStorage.setItem("soundOn", true);
     } else {
       masterVolume(0.0);
+      localStorage.setItem("soundOn", false);
     }
     return;
   }
@@ -957,6 +1117,7 @@ function draw() {
   resetCV();
   wbg.draw();
   state.draw();
+  announcementManager.draw();
 }
 
 var resetCV = function() {
@@ -981,11 +1142,16 @@ function keyPressed() {
 
 function preload() {
   // load images
-  globalSettings.jeanPierre = loadImage("/static/main/img/jp.png");
   globalSettings.playerImg = loadImage("/static/main/img/Vector-Vis.png");
   globalSettings.soundOffImg = loadImage("/static/main/img/sound_off.png");
   globalSettings.soundOnImg = loadImage("/static/main/img/sound_on.png");
   globalSettings.powerup = loadImage("/static/main/img/powerup.png");
+
+  globalSettings.fish_images.push(loadImage("/static/main/img/jp.png"));
+  globalSettings.fish_images.push(loadImage("/static/main/img/Alain.png"));
+  globalSettings.fish_images.push(loadImage("/static/main/img/kurkdroog.png"));
+  globalSettings.fish_images.push(loadImage("/static/main/img/Maggie.png"));
+  globalSettings.fish_images.push(loadImage("/static/main/img/Hawking.png"));
 
   // load sounds
   soundFormats("wav");
@@ -995,4 +1161,6 @@ function preload() {
   soundManager.addSound("slow", "/static/main/sounds/main_slow.mp3");
   soundManager.addSound("grom", "/static/main/sounds/grommel.mp3");
   soundManager.addSound("schurk", "/static/main/sounds/schurk.mp3");
+  soundManager.addSound("reverse", "/static/main/sounds/Main_reverse.mp3");
+  soundManager.addSound("double", "/static/main/sounds/Double_points.mp3");
 }
