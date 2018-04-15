@@ -783,6 +783,7 @@ Game.prototype.mouseClicked = function(mX, mY) {
 };
 Game.prototype.gameOver = function() {
   globalSettings.gameOver = true;
+  this.postScore();
   soundManager.gameOver();
 };
 
@@ -796,16 +797,16 @@ Game.prototype.destroy = function() {
 
 Game.prototype.postScore = function() {
   return new Promise((resolve, reject) => {
-    var username = this.editText;
-    var score = this.score;
-    var postData = { username: username.text, score: score };
+    var username = this.player.name;
+    var score = this.player.score;
+    var postData = { username, score };
     httpPost(
       globalSettings.postUrl,
       "json",
       postData,
       function(data) {
         console.log(data);
-        gameState.setState(new Menu(gameState));
+        //gameState.setState(new Menu(gameState));
       },
       function(error) {
         console.error(error);
