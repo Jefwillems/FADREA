@@ -1,4 +1,3 @@
-{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,12 +6,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>fish</title>
-    <script src="{% static 'main/js/combined.js' %}"></script>
-    <link rel="stylesheet" href="{% static 'main/css/combined.css' %}">
+    <script src="/static/main/js/combined.js"></script>
+    <link rel="stylesheet" href="/static/main/css/combined.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.0.9/js/all.js" integrity="sha384-8iPTk2s/jMVj81dnzb/iFR2sdA7u06vHJyyLlAd4snFpCl/SnyUjRrbdJsw1pGIl"
+        crossorigin="anonymous"></script>
 </head>
 
 <body>
-<div id="cv-container"></div>
+    <div id="cv-container"></div>
+    <div class="icons">
+        <a href="https://www.instagram.com/wearefadrea/" onclick="javascript:void window.open('https://www.instagram.com/wearefadrea/');return false;">
+            <i class="fab fa-instagram"></i>
+        </a>
+        <a href="https://www.facebook.com/fadrea.be/" onclick="javascript:void window.open('https://www.facebook.com/fadrea.be/');return false;">
+            <i class="fab fa-facebook"></i>
+        </a>
+    </div>
 </body>
 
 </html>
