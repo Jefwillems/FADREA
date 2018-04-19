@@ -1,5 +1,7 @@
 from django.db import models
 
+from embed_video.fields import EmbedVideoField
+
 
 # Create your models here.
 
@@ -9,3 +11,8 @@ class HighScores(models.Model):
 
     def __str__(self):
         return "%s: %s" % (self.username, self.score)
+
+
+class Article(models.Model):
+    title = models.CharField(max_length=64, blank=False)
+    video = EmbedVideoField()
