@@ -9,3 +9,5 @@ DATABASES['default'].update(db_from_env)
 ALLOWED_HOSTS = ['*']
 
 REST_FRAMEWORK["DEFAULT_RENDERER_CLASSES"] = ('rest_framework.renderers.JSONRenderer',)
+
+SECRET_KEY = env('DJANGO_SECRET_KEY', default='w0s^mlsma#ryx@h+vu5qea^@im-u)50xvud&swa68)sv8kax9g')
