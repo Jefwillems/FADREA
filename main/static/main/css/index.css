@@ -1,17 +1,9 @@
 
-body {
-    color: #606c76;
+
+.messages {
+
 }
 
-#main-content {
-    padding: 0 5%;
-}
+.message {
 
-.custom-nav {
-    padding-left: 2rem;
-    padding-right: 2rem;
-}
-
-.custom-nav a {
-    color: #606c76 !important;
 }

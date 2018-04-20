@@ -26,7 +26,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^markdownx/', include('markdownx.urls')),
     url(r'^api/', include('api.urls')),
-    url(r'^auth/', include('usermanagement.urls')),
     url(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
+    url(r'^', include('usermanagement.urls')),
     url(r'', include('main.urls')),
 ]

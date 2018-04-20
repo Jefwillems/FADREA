@@ -7,6 +7,19 @@
     <li><a href="#">index link</a></li>
 {% endblock %}
 {% block content %}
+
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li class="message disappearing">
+                    {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Important: {% endif %}
+                    {{ message }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+
     <a href="{% url 'game' %}">play our game!</a>
     <br>
     <a href="{% url 'highscore' %}">highscores!</a>

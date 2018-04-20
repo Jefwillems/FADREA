@@ -2,3 +2,20 @@ html, body {
     margin: 0;
     padding: 0;
 }
+
+body {
+    color: #606c76;
+}
+
+#main-content {
+    padding: 0 5%;
+}
+
+.custom-nav {
+    padding-left: 2rem;
+    padding-right: 2rem;
+}
+
+.custom-nav a {
+    color: #606c76 !important;
+}
