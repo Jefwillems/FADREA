@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>fadrea frontend</title>
+    <title>{% block title %}{% endblock %}</title>
 
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-alpha.4/css/materialize.min.css">
@@ -22,7 +22,7 @@
 <body>
 <nav class="white">
     <div class="nav-wrapper custom-nav">
-        <a href="#" class="brand-logo">FADREA</a>
+        <a href="/" class="brand-logo">FADREA</a>
         <a href="#" data-target="mobile-nav" class="sidenav-trigger">
             <i class="material-icons">menu</i>
         </a>
@@ -51,7 +51,9 @@
     {% endblock %}
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-alpha.4/js/materialize.min.js"></script>
-<script src="{% static 'main/js/index.js' %}"></script>
+
+{% block scripts %}
+{% endblock %}
 </body>
 
 </html>

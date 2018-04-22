@@ -1,6 +1,10 @@
+from django.contrib.auth import get_user_model
 from django.contrib.auth.views import LoginView, LogoutView, PasswordChangeView, PasswordChangeDoneView, \
     PasswordResetView, PasswordResetDoneView, PasswordResetConfirmView, PasswordResetCompleteView
 from django.contrib.messages.views import SuccessMessageMixin
+from django.urls import reverse_lazy
+from django.views import generic
+from usermanagement.forms import RegisterForm
 
 
 class CLoginView(SuccessMessageMixin, LoginView):
@@ -9,9 +13,15 @@ class CLoginView(SuccessMessageMixin, LoginView):
     success_message = 'You succesfully logged in!'
 
 
-class CLogoutView(SuccessMessageMixin, LogoutView):
-    success_message = 'You successfully logged out!'
-    extra_context = {'messages': ['You successfully logged out!']}
+class RegisterView(generic.CreateView):
+    form_class = RegisterForm
+    success_url = reverse_lazy('login')
+    template_name = 'usermanagement/register.html'
+    model = get_user_model()
+
+
+class CLogoutView(LogoutView):
+    pass
 
 
 class CPasswordChangeView(PasswordChangeView):

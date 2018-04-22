@@ -1,10 +1,11 @@
 from django.contrib import admin
 from main.models import Article
+from markdownx.admin import MarkdownxModelAdmin
 
 
 # Register your models here.
 
-class ArticleAdmin(admin.ModelAdmin):
+class ArticleAdmin(MarkdownxModelAdmin):
     pass
 
 

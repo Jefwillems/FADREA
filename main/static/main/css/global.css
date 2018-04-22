@@ -19,3 +19,15 @@ body {
 .custom-nav a {
     color: #606c76 !important;
 }
+
+.message {
+    background-color: greenyellow;
+}
+
+.message.error {
+    background-color: indianred;
+}
+
+.message.disappearing {
+    opacity: 0.5;
+}

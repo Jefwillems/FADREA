@@ -1,0 +1,23 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %}Sign Up{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'main/css/forms.css' %}" type="text/css">
+{% endblock %}
+
+{% block content %}
+    <h2>Registreer</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="btn waves-effect waves-light" type="submit" name="action">Registreer
+            <i class="material-icons right">send</i>
+        </button>
+    </form>
+{% endblock %}
+
+{% block scripts %}
+    <script src="{% static 'main/js/forms.js' %}"></script>
+{% endblock %}
