@@ -1,0 +1,9 @@
+form span.helptext {
+    display: none;
+}
+
+form .form-input {
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+}

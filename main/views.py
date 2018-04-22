@@ -13,16 +13,9 @@ class GameView(generic.TemplateView):
     template_name = 'main/game.html'
 
 
-def handler404(request):
-    response = render_to_response('main/404.html', {})
-    response.status_code = 404
-    return response
-
-
-def handler500(request):
-    response = render_to_response('main/500.html', {})
-    response.status_code = 500
-    return response
+class ArticleView(generic.ListView):
+    model = Article
+    queryset = Article.objects.all()
 
 
 class HighscoreView(generic.ListView):
@@ -34,3 +27,5 @@ class HighscoreView(generic.ListView):
 
 def test(request):
     return render_to_response('main/index.html', context={'video': Article.objects.first()})
+
+

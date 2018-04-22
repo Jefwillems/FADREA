@@ -1,6 +1,7 @@
 from django.db import models
 
 from embed_video.fields import EmbedVideoField
+from markdownx.models import MarkdownxField
 
 
 # Create your models here.
@@ -16,3 +17,4 @@ class HighScores(models.Model):
 class Article(models.Model):
     title = models.CharField(max_length=64, blank=False)
     video = EmbedVideoField()
+    text = MarkdownxField()

@@ -17,16 +17,18 @@ Including another URLconf
 from django.conf import settings
 from django.conf.urls import url, include
 from django.contrib import admin
+from django.shortcuts import render_to_response
 from django.views.static import serve
 
-handler404 = 'main.views.handler404'
-handler500 = 'main.views.handler500'
+handler404 = 'fadrea.views.handler404'
+handler500 = 'fadrea.views.handler500'
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^markdownx/', include('markdownx.urls')),
     url(r'^api/', include('api.urls')),
-    url(r'^auth/', include('usermanagement.urls')),
     url(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
+    url(r'^', include('usermanagement.urls')),
     url(r'', include('main.urls')),
 ]
+
