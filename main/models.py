@@ -17,4 +17,4 @@ class HighScores(models.Model):
 class Article(models.Model):
     title = models.CharField(max_length=64, blank=False)
     video = EmbedVideoField()
-    text = MarkdownxField()
+    text = MarkdownxField(default="")
