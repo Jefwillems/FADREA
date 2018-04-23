@@ -17,7 +17,7 @@ class HighScores(models.Model):
 
 class Article(models.Model):
     title = models.CharField(max_length=64, blank=False)
-    video = EmbedVideoField()
+    video = EmbedVideoField(blank=True, null=True)
     text = MarkdownxField(default="")
     slug = models.SlugField(max_length=40, unique=True, blank=True, null=True)
 
