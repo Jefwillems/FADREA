@@ -22,5 +22,6 @@ class Article(models.Model):
     slug = models.SlugField(max_length=40, unique=True, blank=True, null=True)
 
     def save(self, *args, **kwargs):
-        self.slug = slugify(self.title + str(datetime.now().timestamp())[-5:])
+        if not self.slug:
+            self.slug = slugify(self.title + str(datetime.now().timestamp())[-5:])
         super(Article, self).save(*args, **kwargs)
