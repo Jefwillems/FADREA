@@ -1,0 +1,15 @@
+{% extends 'main/base.html' %}
+{% load show_markdown %}
+{% load static %}
+
+{% block title %}FADREA {{ article.title }}{% endblock %}
+
+{% block content %}
+    <p>{{ article.title }}</p>
+    <p>{{ article.text|show_markdown|safe }}</p>
+{% endblock %}
+
+{% block scripts %}
+    {{ block.super }}
+    <script src="{% static 'main/js/embed.js' %}"></script>
+{% endblock %}

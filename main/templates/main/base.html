@@ -31,7 +31,7 @@
                 <a href="#">Residents</a>
             </li>
             <li>
-                <a href="#">News</a>
+                <a href="{% url 'news' %}">News</a>
             </li>
             <li>
                 <a href="#">Home</a>
@@ -53,6 +53,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-alpha.4/js/materialize.min.js"></script>
 
 {% block scripts %}
+    <script src="{% static 'main/js/index.js' %}"></script>
 {% endblock %}
 </body>
 

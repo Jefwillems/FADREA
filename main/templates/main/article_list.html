@@ -1,0 +1,8 @@
+{% extends 'main/base.html' %}
+{% block content %}
+    {% for article in articles %}
+        <li>{{ article.title }} : {{ article.id }}</li>
+        <a href="{% url 'article-detail' article.slug %}">go to</a>
+    {% endfor %}
+{% endblock %}
+

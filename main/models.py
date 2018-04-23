@@ -1,5 +1,6 @@
-from django.db import models
-
+from django.db import models, IntegrityError
+from django.utils.text import slugify
+from django.utils.timezone import datetime
 from embed_video.fields import EmbedVideoField
 from markdownx.models import MarkdownxField
 
@@ -18,3 +19,8 @@ class Article(models.Model):
     title = models.CharField(max_length=64, blank=False)
     video = EmbedVideoField()
     text = MarkdownxField(default="")
+    slug = models.SlugField(max_length=40, unique=True, blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.title + str(datetime.now().timestamp())[-5:])
+        super(Article, self).save(*args, **kwargs)

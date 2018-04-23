@@ -6,7 +6,7 @@ from markdownx.admin import MarkdownxModelAdmin
 # Register your models here.
 
 class ArticleAdmin(MarkdownxModelAdmin):
-    pass
+    exclude = ('slug',)
 
 
 admin.site.register(Article, ArticleAdmin)
