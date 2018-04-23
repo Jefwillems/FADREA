@@ -13,9 +13,19 @@ class GameView(generic.TemplateView):
     template_name = 'main/game.html'
 
 
-class ArticleView(generic.ListView):
+class ArticleListView(generic.ListView):
     model = Article
     queryset = Article.objects.all()
+    context_object_name = 'articles'
+
+
+class ArticleView(generic.DetailView):
+    model = Article
+    context_object_name = 'article'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
 
 
 class HighscoreView(generic.ListView):
@@ -27,5 +37,3 @@ class HighscoreView(generic.ListView):
 
 def test(request):
     return render_to_response('main/index.html', context={'video': Article.objects.first()})
-
-

@@ -13,6 +13,7 @@ dj-database-url = "*"
 whitenoise = "*"
 django-markdownx = "*"
 django-embed-video = "*"
+"psycopg2-binary" = "*"
 
 [requires]
 python_version = "3.6"
