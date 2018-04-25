@@ -52,6 +52,7 @@ THIRD_PARTY_APPS = (
     'rest_framework',
     'markdownx',
     'embed_video',
+    'polymorphic',
 )
 
 LOCAL_APPS = (
