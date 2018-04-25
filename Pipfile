@@ -14,6 +14,7 @@ whitenoise = "*"
 django-markdownx = "*"
 django-embed-video = "*"
 "psycopg2-binary" = "*"
+django-polymorphic = "*"
 
 [requires]
 python_version = "3.6"
