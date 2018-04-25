@@ -2,7 +2,7 @@ from django.db.models import Max
 from django.shortcuts import render_to_response
 from django.views import generic
 
-from main.models import HighScores, Article
+from main.models import HighScores, Article, Artist
 
 
 class IndexView(generic.TemplateView):
@@ -33,6 +33,21 @@ class HighscoreView(generic.ListView):
     queryset = HighScores.objects.values('username').annotate(max_score=Max('score')).order_by('-max_score')
     template_name = 'main/highscore.html'
     context_object_name = 'scores'
+
+
+class ArtistListView(generic.ListView):
+    model = Artist
+    queryset = Artist.objects.all()
+    context_object_name = 'artists'
+
+
+class ArtistDetailView(generic.DetailView):
+    model = Artist
+    context_object_name = 'artist'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
 
 
 def test(request):

@@ -1,0 +1,9 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+    <h2>artists</h2>
+    {% for artist in artists %}
+        <p><a href="{% url 'artist-detail' artist.slug %}">{{ artist.name }}</a></p>
+    {% endfor %}
+
+{% endblock %}
