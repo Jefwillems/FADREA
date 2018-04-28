@@ -2,11 +2,17 @@ from django.db.models import Max
 from django.shortcuts import render_to_response
 from django.views import generic
 
-from main.models import HighScores, Article, Artist
+from main.models import HighScores, Article, Artist, Spotlight, ArtistImagePost
 
 
 class IndexView(generic.TemplateView):
     template_name = 'main/index.html'
+
+    def spotlight(self):
+        return Spotlight.objects.latest('created')
+
+    def articles(self):
+        return Article.objects.all().order_by('-created')
 
 
 class GameView(generic.TemplateView):

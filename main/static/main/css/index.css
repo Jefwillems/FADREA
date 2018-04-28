@@ -1,9 +1,41 @@
 
-
 .messages {
 
 }
 
 .message {
 
+}
+
+.spotlight-item img {
+    max-width: 100%;
+}
+
+.spotlight-item {
+    position: relative;
+}
+
+.spotlight-item span {
+    position: absolute;
+    margin: auto;
+    top: 50%;
+    left: 1.5rem;
+    font-size: 5em;
+    color: #fff;
+}
+
+.spotlight-item:first-child span {
+    left: unset;
+    right: 1.5rem;
+}
+
+.article-container:nth-child(2n) {
+    background: deeppink;
+}
+
+@media only screen and (max-width: 993px) {
+    .row .spotlight-item {
+        margin: auto;
+        float: unset;
+    }
 }
