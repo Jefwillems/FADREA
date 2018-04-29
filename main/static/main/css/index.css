@@ -29,10 +29,6 @@
     right: 1.5rem;
 }
 
-.article-container:nth-child(2n) {
-    background: deeppink;
-}
-
 @media only screen and (max-width: 993px) {
     .row .spotlight-item {
         margin: auto;
