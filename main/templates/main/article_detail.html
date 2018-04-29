@@ -2,11 +2,17 @@
 {% load show_markdown %}
 {% load static %}
 
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'main/css/article-detail.css' %}">
+{% endblock %}
+
 {% block title %}FADREA {{ article.title }}{% endblock %}
 
 {% block content %}
-    <p>{{ article.title }}</p>
-    <p>{{ article.text|show_markdown|safe }}</p>
+    <h1>{{ article.title }}</h1>
+    <div class="article">
+        {{ article.text|show_markdown|safe }}
+    </div>
 {% endblock %}
 
 {% block scripts %}

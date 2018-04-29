@@ -12,13 +12,12 @@ const embed = (function () {
         const ytPattern = /<p>embed:?([^<]*)<\/p>/g;
 
         if (ytPattern.test(html)) {
-            const replacement = "<div class='yt-player' id='$1'></div>";
+            const replacement = "<div class='player'><div class='yt-player' id='$1'></div></div>";
             html = html.replace(ytPattern, replacement);
             body.innerHTML = html;
             let allVideos = [].slice.call(document.querySelectorAll('.yt-player'));
             allVideos.forEach(el => {
                 let id = el.id;
-                console.log('replacing div with id:' + id);
                 new YT.Player(id, {
                     height: '360',
                     width: '640',
