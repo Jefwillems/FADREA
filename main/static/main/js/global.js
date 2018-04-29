@@ -2,10 +2,11 @@ document.addEventListener("DOMContentLoaded", function () {
     let links = Array.prototype.slice.call(document.querySelectorAll(".nav-row-container a"));
     links = links.map(e => {
         let li = document.createElement('li');
-        li.appendChild(e);
+        li.appendChild(e.cloneNode(true));
         return li;
     });
     let mob = document.getElementById("mobile-nav");
+
     links.forEach(e => {
         mob.appendChild(e);
     });
