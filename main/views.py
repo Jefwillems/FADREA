@@ -12,7 +12,7 @@ class IndexView(generic.TemplateView):
         return Spotlight.objects.latest('created')
 
     def articles(self):
-        return Article.objects.all().order_by('-created')
+        return Article.objects.all().order_by('-created')[:15]
 
 
 class GameView(generic.TemplateView):
@@ -21,7 +21,7 @@ class GameView(generic.TemplateView):
 
 class ArticleListView(generic.ListView):
     model = Article
-    queryset = Article.objects.all()
+    queryset = Article.objects.all().order_by('-created')
     context_object_name = 'articles'
 
 

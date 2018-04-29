@@ -44,10 +44,15 @@
             {% for article in articles %}
                 <div class="col s12 m6 l4 article-container">
                     <div class="article-image">
-                        <img src="{{ article.image }}" alt="{{ article.title }} thumbnail">
+                        <a href="{% url 'article-detail' article.slug %}">
+                            <img src="{{ article.image }}"
+                                 alt="{{ article.title }} thumbnail">
+                        </a>
                     </div>
                     <div class="article-info">
-                        <p class="article-title">{{ article.title }}</p>
+                        <p class="article-title"><a
+                                href="{% url 'article-detail' article.slug %}">{{ article.title }}</a>
+                        </p>
                         <p>{{ article.created|date }}</p>
                     </div>
                 </div>
