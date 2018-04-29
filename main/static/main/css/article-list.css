@@ -15,3 +15,12 @@
 .article-container:nth-child(2n) {
     background: #f1f1f1;
 }
+
+.article-container a {
+    color: #606c76;
+    text-decoration: none;
+}
+
+.article-container a:hover {
+    color: #8e8e8e;
+}
