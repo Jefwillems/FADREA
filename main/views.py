@@ -39,6 +39,13 @@ class PostView(generic.DetailView):
     context_object_name = 'post'
     template_name = 'main/post-detail.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        post = context[self.context_object_name].get_real_instance()
+        post = convertpost(post)
+        context['post'] = post
+        return context
+
 
 class HighscoreView(generic.ListView):
     model = HighScores
@@ -72,8 +79,12 @@ def test(request):
 def convertposts(posts):
     ret = []
     for post in posts:
-        if isinstance(post, ArtistImagePost):
-            ret.append(dict(type='image', post=post))
-        if isinstance(post, ArtistVideoPost):
-            ret.append(dict(type='video', post=post))
+        ret.append(convertpost(post))
     return ret
+
+
+def convertpost(post):
+    if isinstance(post, ArtistImagePost):
+        return dict(type='image', post=post)
+    if isinstance(post, ArtistVideoPost):
+        return dict(type='video', post=post)

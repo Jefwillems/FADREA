@@ -81,16 +81,18 @@
     <script src="{% static 'main/js/global.js' %}"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-
-            var box = document.createElement("div");
-            var msg = document.createElement("span");
-            msg.innerText = "Under construction";
-            box.className = "msg-box";
-            box.appendChild(msg);
-            document.body.appendChild(box);
-            setTimeout(function () {
-                box.style.display = "none";
-            }, 2000);
+            if (!sessionStorage.getItem("msg_seen")) {
+                var box = document.createElement("div");
+                var msg = document.createElement("span");
+                msg.innerText = "Under construction";
+                box.className = "msg-box";
+                box.appendChild(msg);
+                document.body.appendChild(box);
+                setTimeout(function () {
+                    sessionStorage.setItem("msg_seen", "true");
+                    box.style.display = "none";
+                }, 2000);
+            }
         });
 
     </script>
