@@ -20,6 +20,7 @@ class MemberInline(admin.TabularInline):
 
 class ContactAdmin(MarkdownxModelAdmin):
     inlines = (MemberInline,)
+    readonly_fields = ('created',)
 
 
 admin.site.register(Contact, ContactAdmin)

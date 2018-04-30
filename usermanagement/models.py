@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.utils import timezone
 from markdownx.models import MarkdownxField
 
 
@@ -30,6 +31,12 @@ class Members(models.Model):
 
 class Contact(models.Model):
     biography = MarkdownxField()
+    created = models.DateField(blank=True, null=True)
 
     def __str__(self):
         return 'Contact info'
+
+    def save(self, *args, **kwargs):
+        if not self.created:
+            self.created = timezone.now()
+        return super(Contact, self).save(*args, **kwargs)

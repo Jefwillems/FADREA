@@ -1,8 +1,21 @@
 {% extends 'main/base.html' %}
-
+{% load show_markdown %}
+{% load static %}
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'usermanagement/contact.css' %}">
+{% endblock %}
 
 {% block content %}
-    {% with view.members as members %}
-
+    {% with view.contact as contact %}
+        <div class="biography">
+            {{ contact.biography|show_markdown|safe }}
+        </div>
+        <div class="members">
+            <ul>
+                {% for member in contact.members.all %}
+                    <li>{{ member.full_name }}{{ member.functie }}</li>
+                {% endfor %}
+            </ul>
+        </div>
     {% endwith %}
 {% endblock %}
