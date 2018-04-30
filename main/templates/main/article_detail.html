@@ -9,10 +9,13 @@
 {% block title %}FADREA {{ article.title }}{% endblock %}
 
 {% block content %}
-    <h1>{{ article.title }}</h1>
-    <div class="article">
-        {{ article.text|show_markdown|safe }}
+    <div class="container">
+        <h1>{{ article.title }}</h1>
+        <div class="article">
+            {{ article.text|show_markdown|safe }}
+        </div>
     </div>
+
 {% endblock %}
 
 {% block scripts %}
