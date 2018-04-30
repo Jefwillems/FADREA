@@ -18,7 +18,6 @@
             <div class="col s7 m8 l9">
                 <h3>{{ artist.name }}</h3>
                 <div class="biography">
-                    <h5>biography</h5>
                     <p>
                         {{ artist.biography|show_markdown|safe }}
                     </p>
@@ -33,7 +32,9 @@
                         <div class="post-image">
                             <a href="{% url 'post-detail' post.post.slug %}">
                                 <div class="img" style='background-image: url("{{ post.post.content }}")'>
-                                    <div><span>{{ post.post.title }}</span></div>
+                                    <div>
+                                        <span>{{ post.post.title }}</span>
+                                    </div>
                                 </div>
                             </a>
                         </div>
