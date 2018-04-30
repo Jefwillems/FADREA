@@ -2,7 +2,7 @@ from django.db.models import Max
 from django.shortcuts import render_to_response
 from django.views import generic
 
-from main.models import HighScores, Article, Artist, Spotlight, ArtistImagePost, Post, ArtistVideoPost
+from main.models import HighScores, Article, Artist, Spotlight, ArtistImagePost, Post, ArtistVideoPost, Event
 
 
 class IndexView(generic.TemplateView):
@@ -72,8 +72,10 @@ class ArtistDetailView(generic.DetailView):
         return context
 
 
-def test(request):
-    return render_to_response('main/index.html', context={'video': Article.objects.first()})
+class EventsView(generic.ListView):
+    template_name = 'main/events.html'
+    model = Event
+    queryset = Event.objects.all()
 
 
 def convertposts(posts):

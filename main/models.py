@@ -114,3 +114,10 @@ class Spotlight(models.Model):
 
     def __str__(self):
         return "Spotlight from %s" % self.created
+
+
+class Event(models.Model):
+    title = models.CharField(max_length=64, default="event")
+
+    def __str__(self):
+        return self.title
