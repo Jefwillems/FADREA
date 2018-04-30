@@ -2,7 +2,7 @@ from django.db.models import Max
 from django.shortcuts import render_to_response
 from django.views import generic
 
-from main.models import HighScores, Article, Artist, Spotlight, ArtistImagePost
+from main.models import HighScores, Article, Artist, Spotlight, ArtistImagePost, Post, ArtistVideoPost
 
 
 class IndexView(generic.TemplateView):
@@ -34,6 +34,11 @@ class ArticleView(generic.DetailView):
         return context
 
 
+class PostView(generic.DetailView):
+    model = Post
+    context_object_name = 'post'
+    template_name = 'main/post-detail.html'
+
 
 class HighscoreView(generic.ListView):
     model = HighScores
@@ -54,8 +59,21 @@ class ArtistDetailView(generic.DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        posts = context[self.context_object_name].posts.get_real_instances()
+        posts = convertposts(posts)
+        context['posts'] = posts
         return context
 
 
 def test(request):
     return render_to_response('main/index.html', context={'video': Article.objects.first()})
+
+
+def convertposts(posts):
+    ret = []
+    for post in posts:
+        if isinstance(post, ArtistImagePost):
+            ret.append(dict(type='image', post=post))
+        if isinstance(post, ArtistVideoPost):
+            ret.append(dict(type='video', post=post))
+    return ret

@@ -1,5 +1,66 @@
 {% extends 'main/base.html' %}
+{% load static %}
+{% load show_markdown %}
+{% load embed_video_tags %}
+
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'main/css/artist-detail.css' %}">
+{% endblock %}
 
 {% block content %}
-    <p>{{ artist.name }}</p>
+    <div class="container">
+        <div class="row">
+            <div class="col s5 m4 l3">
+                <div class="cover">
+                    <img src="{{ artist.image }}" alt="artist cover picture">
+                </div>
+            </div>
+            <div class="col s7 m8 l9">
+                <h3>{{ artist.name }}</h3>
+                <div class="biography">
+                    <h5>biography</h5>
+                    <p>
+                        {{ artist.biography|show_markdown|safe }}
+                    </p>
+                </div>
+            </div>
+        </div>
+        <h5>Posts</h5>
+        <div class="row posts">
+            {% for post in posts %}
+                {% if post.type == 'image' %}
+                    <div class="col s12 m6 l4 post-container">
+                        <div class="post-image">
+                            <a href="{% url 'post-detail' post.post.slug %}">
+                                <div class="img" style='background-image: url("{{ post.post.content }}")'>
+                                    <span>{{ post.post.title }}</span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                {% elif post.type == 'video' %}
+                    <div class="col s12 m12 l12 post-container">
+                        <div class="row">
+                            <div class="post-image col s12 m12 l9">
+                                {% video post.post.content %}
+                            </div>
+                            <div class="post-info col s12 m12 l3">
+                                <p class="post-title"><a
+                                        href="{% url 'post-detail' post.post.slug %}">{{ post.post.title }}</a>
+                                </p>
+                                <div class="post-description">
+                                    {{ post.post.description|show_markdown|safe }}
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                {% else %}
+                    <p>is none</p>
+                {% endif %}
+
+            {% endfor %}
+        </div>
+    </div>
 {% endblock %}

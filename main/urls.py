@@ -10,5 +10,6 @@ urlpatterns = [
     url(r'^news/(?P<slug>[-\w]+)/$', views.ArticleView.as_view(), name='article-detail'),
     url(r'^artists/$', views.ArtistListView.as_view(), name='artists'),
     url(r'^artists/(?P<slug>[-\w]+)/$', views.ArtistDetailView.as_view(), name="artist-detail"),
+    url(r'^posts/(?P<slug>[-\w]+)/$', views.PostView.as_view(), name="post-detail"),
     url(r'^$', views.IndexView.as_view(), name='index'),
 ]

@@ -17,7 +17,7 @@ class HighScores(models.Model):
 
 
 class Post(PolymorphicModel):
-    author = models.ForeignKey('Artist', on_delete=models.CASCADE, related_name='imageposts')
+    author = models.ForeignKey('Artist', on_delete=models.CASCADE, related_name='posts')
     title = models.CharField(max_length=128, blank=False)
     description = MarkdownxField(default="", blank=True, null=True)
     slug = models.SlugField(max_length=40, unique=True, blank=True, null=True)
@@ -74,6 +74,9 @@ class Artist(models.Model):
     name = models.CharField(max_length=128, blank=False, null=False, unique=True)
     biography = MarkdownxField(default="")
     slug = models.SlugField(max_length=40, unique=True, blank=True, null=True)
+    image = models.URLField(
+        default="http://cdn7.bigcommerce.com/s-viqdwewl26/stencil/8f903ed0-76e7-0135-12e4-525400970412/"
+                "icons/icon-no-image.svg")
 
     def save(self, *args, **kwargs):
         if not self.slug:

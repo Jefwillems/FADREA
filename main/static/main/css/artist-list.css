@@ -1,0 +1,35 @@
+.container h2 {
+    width: 100%;
+    margin: auto;
+    text-align: center;
+    font-family: titleFont, serif;
+}
+
+.artist-image {
+    padding: 5%;
+}
+
+.artist-image img {
+    max-width: 100%;
+}
+
+.artist-title {
+    font-size: 2rem;
+    font-style: italic;
+    text-align: center;
+}
+
+.artist-container:nth-child(2n) {
+    background: #f1f1f1;
+}
+
+.artist-container a {
+    color: #606c76;
+    text-decoration: none;
+}
+
+.artist-container a:hover {
+    color: #8e8e8e;
+}
+
+
