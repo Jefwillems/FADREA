@@ -1,9 +1,29 @@
 {% extends 'main/base.html' %}
+{% load static %}
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'main/css/artist-list.css' %}">
+{% endblock %}
 
 {% block content %}
-    <h2>artists</h2>
-    {% for artist in artists %}
-        <p><a href="{% url 'artist-detail' artist.slug %}">{{ artist.name }}</a></p>
-    {% endfor %}
+    <div class="container">
+        <h2>artists</h2>
+        <div class="row">
+            {% for artist in artists %}
+                <div class="col s12 m6 l4 artist-container">
+                    <div class="artist-image">
+                        <a href="{% url 'artist-detail' artist.slug %}">
+                            <img src="{{ artist.image }}"
+                                 alt="{{ artist.name }} thumbnail">
+                        </a>
+                    </div>
+                    <div class="artist-info">
+                        <p class="artist-title"><a href="{% url 'artist-detail' artist.slug %}">{{ artist.name }}</a>
+                        </p>
+                        <p>posts: {{ artist.posts.all.count }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
 
 {% endblock %}

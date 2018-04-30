@@ -1,0 +1,41 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% load show_markdown %}
+{% load embed_video_tags %}
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'main/css/post-detail.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        {% if post.type == 'image' %}
+            <div class="imagepost">
+                <h4>{{ post.post.title }}</h4>
+                <h6>By: <a href="{% url 'artist-detail' post.post.author.slug %}">{{ post.post.author.name }}</a>
+                </h6>
+                <div class="post-content">
+                    <div class="post-image">
+                        <img src="{{ post.post.content }}" alt="{{ post.post.title }} thumbnail">
+                    </div>
+                    <div class="post-description">
+                        {{ post.post.description|show_markdown|safe }}
+                    </div>
+                </div>
+            </div>
+        {% elif post.type == 'video' %}
+            <div class="imagepost">
+                <h4>{{ post.post.title }}</h4>
+                <h6>By: <a href="{% url 'artist-detail' post.post.author.slug %}">{{ post.post.author.name }}</a>
+                </h6>
+                <div class="post-content">
+                    <div class="post-video">
+                        {% video post.post.content %}
+                    </div>
+                    <div class="post-description">
+                        {{ post.post.description|show_markdown|safe }}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

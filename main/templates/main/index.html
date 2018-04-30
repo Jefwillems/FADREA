@@ -2,10 +2,11 @@
 {% load static %}
 {% block styles %}
     <link rel="stylesheet" type="text/css" href="{% static 'main/css/index.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'main/css/article-list.css' %}">
 {% endblock %}
-{% block nav-links %}
-    <li><a href="#">index link</a></li>
-{% endblock %}
+
+{% block title %}{{ block.super }}{% endblock %}
+
 {% block content %}
 
     {% if messages %}
@@ -18,9 +19,42 @@
         </ul>
     {% endif %}
 
-    <a href="{% url 'game' %}">play our game!</a>
-    <br>
-    <a href="{% url 'highscore' %}">highscores!</a>
+    <section class="row">
+        {% with view.spotlight as s %}
+            <div class="col s12 m8 l6 spotlight-item">
+                <a href="{{ s.left_url }}">
+                    <div class="slimg" style='background-image: url("{{ s.left_image }}")'>&nbsp;</div>
+                    <span>{{ s.left_title }}</span>
+                </a>
+            </div>
+            <div class="col s12 m8 l6 spotlight-item">
+                <a href="{{ s.right_url }}">
+                    <div class="slimg" style='background-image: url("{{ s.right_image }}")'>&nbsp;</div>
+                    <span>{{ s.right_title }}</span>
+                </a>
+            </div>
+        {% endwith %}
+    </section>
+
+    <section class="row">
+        {% with view.articles as articles %}
+            {% for article in articles %}
+                <div class="col s12 m6 l4 article-container">
+                    <div class="article-image">
+                        <a href="{% url 'article-detail' article.slug %}">
+                            <div class="img" style='background-image: url("{{ article.image }}")'>
+                                <div><span>{{ article.title }}</span></div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="article-info">
+                        <p class="created">{{ article.created|date }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endwith %}
+    </section>
+
 {% endblock %}
 
 {% block scripts %}

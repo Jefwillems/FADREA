@@ -1,8 +1,24 @@
 {% extends 'main/base.html' %}
+{% load static %}
+{% block styles %}
+    <link rel="stylesheet" href="{% static 'main/css/article-list.css' %}">
+{% endblock %}
 {% block content %}
-    {% for article in articles %}
-        <li>{{ article.title }} : {{ article.id }}</li>
-        <a href="{% url 'article-detail' article.slug %}">go to</a>
-    {% endfor %}
+    <section class="row">
+        {% for article in articles %}
+            <div class="col s12 m6 l4 article-container">
+                <div class="article-image">
+                    <a href="{% url 'article-detail' article.slug %}">
+                        <div class="img" style='background-image: url("{{ article.image }}")'>
+                            <div><span>{{ article.title }}</span></div>
+                        </div>
+                    </a>
+                </div>
+                <div class="article-info">
+                    <p class="created">{{ article.created|date }}</p>
+                </div>
+            </div>
+        {% endfor %}
+    </section>
 {% endblock %}
 

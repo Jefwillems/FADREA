@@ -1,0 +1,52 @@
+h4 {
+    font-family: titleFont, serif;
+    text-align: center;
+    font-size: 3rem;
+}
+
+h6 {
+    font-family: titleFont, serif;
+    text-align: center;
+    font-size: 2rem;
+}
+
+h6 a {
+    color: #606c76;
+}
+
+h6 a:hover {
+    color: darkcyan;
+}
+
+.imagepost {
+
+}
+
+.post-content {
+
+}
+
+.imagepost .post-content {
+
+}
+
+.post-content .post-image {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.post-content .post-image img {
+    margin: auto;
+}
+
+.post-video {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.post-video iframe {
+    width: 80%;
+    height: 360px;
+}

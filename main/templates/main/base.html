@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>{% block title %}{% endblock %}</title>
+    <title>{% block title %}FADREA{% endblock %}</title>
 
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-alpha.4/css/materialize.min.css">
@@ -20,30 +20,42 @@
 </head>
 
 <body>
-<nav class="white">
-    <div class="nav-wrapper custom-nav">
-        <a href="/" class="brand-logo">FADREA</a>
+<nav class="clearfix">
+    <div class="custom-nav">
+        <div class="fadrea">
+            <a href="/" class="brand-logo">FADREA</a>
+        </div>
         <a href="#" data-target="mobile-nav" class="sidenav-trigger">
             <i class="material-icons">menu</i>
         </a>
-        <ul class="right hide-on-med-and-down" id="desktop-nav">
-            <li>
-                <a href="{% url 'artists' %}">Artists</a>
-            </li>
-            <li>
-                <a href="{% url 'news' %}">News</a>
-            </li>
-            <li>
-                <a href="#">Home</a>
-            </li>
-            {% block nav-links %}
-
-            {% endblock %}
-        </ul>
+        <div class="nav-content hide-on-med-and-down">
+            <div class="nav-links" id="desktop-nav">
+                <div class="nav-row-container">
+                    <div class="row">
+                        <div class="col s8">&nbsp;</div>
+                        <div class="col s2"><a href="{% url 'contact' %}">Contact</a></div>
+                        <div class="col s2"><a href="{% url 'news' %}">News</a></div>
+                    </div>
+                    <div class="row pr">
+                        <div class="col s8">&nbsp;</div>
+                        <div class="col s2"><a href="{% url 'artists' %}">Artists</a></div>
+                        <div class="col s2"><a href="{% url 'events' %}">Events</a></div>
+                    </div>
+                </div>
+            </div>
+            <img class="img-logo" width="400" height="400" src="{% static 'main/img/logo_zwart.png' %}"
+                 alt="fadrea logo">
+        </div>
     </div>
 </nav>
 <ul class="sidenav" id="mobile-nav">
-
+    <li>
+        <div class="user-view">
+            <div class="background">
+                <img src="{% static 'main/img/logo_zwart_plat.png' %}">
+            </div>
+        </div>
+    </li>
 </ul>
 <div id="main-content" class="">
     {% block content %}
@@ -51,9 +63,39 @@
     {% endblock %}
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-alpha.4/js/materialize.min.js"></script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-81490441-2"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-81490441-2');
+</script>
 
 {% block scripts %}
-    <script src="{% static 'main/js/index.js' %}"></script>
+    <script src="{% static 'main/js/global.js' %}"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            if (!sessionStorage.getItem("msg_seen")) {
+                var box = document.createElement("div");
+                var msg = document.createElement("span");
+                msg.innerText = "Under construction";
+                box.className = "msg-box";
+                box.appendChild(msg);
+                document.body.appendChild(box);
+                setTimeout(function () {
+                    sessionStorage.setItem("msg_seen", "true");
+                    box.style.display = "none";
+                }, 2000);
+            }
+        });
+
+    </script>
 {% endblock %}
 </body>
 
