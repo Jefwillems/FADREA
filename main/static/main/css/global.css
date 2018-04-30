@@ -159,7 +159,8 @@ ul li {
     /*-webkit-animation: 2.5s linear;*/
     /*-o-animation: 2.5s linear;*/
     /*animation: 2.5s linear;*/
-    animation: slideout 3s linear;
+    animation: slideout 2s linear;
+    animation-iteration-count: 1;
 }
 
 .msg-box span {
