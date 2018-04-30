@@ -98,8 +98,28 @@ nav {
     opacity: 0.5;
 }
 
+.user-view {
+    min-height: 200px;
+}
+
+.user-view img {
+    max-width: 100%;
+}
+
 .clearfix:after {
     content: "";
     display: table;
     clear: both;
+}
+
+@media only screen and (max-width: 993px) {
+    .fadrea a {
+        font-size: 4rem;
+    }
+}
+
+@media only screen and (max-width: 375px) {
+    .fadrea a {
+        font-size: 3rem;
+    }
 }
