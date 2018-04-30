@@ -33,7 +33,7 @@
                 <div class="nav-row-container">
                     <div class="row">
                         <div class="col s8">&nbsp;</div>
-                        <div class="col s2"><a href="#">Contact</a></div>
+                        <div class="col s2"><a href="{% url 'contact' %}">Contact</a></div>
                         <div class="col s2"><a href="{% url 'news' %}">News</a></div>
                     </div>
                     <div class="row pr">
@@ -41,7 +41,6 @@
                         <div class="col s2"><a href="{% url 'artists' %}">Artists</a></div>
                         <div class="col s2"><a href="#">Events</a></div>
                     </div>
-                    {% block nav-links %}{% endblock %}
                 </div>
             </div>
             <img class="img-logo" width="400" height="400" src="{% static 'main/img/logo_zwart.png' %}"

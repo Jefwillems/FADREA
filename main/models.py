@@ -92,13 +92,13 @@ class Spotlight(models.Model):
     left_image = models.URLField(
         default="http://cdn7.bigcommerce.com/s-viqdwewl26/stencil/8f903ed0-76e7-0135-12e4-525400970412/"
                 "icons/icon-no-image.svg")
-    left_title = models.CharField(max_length=24, default="")
+    left_title = models.CharField(max_length=24, default="", blank=True, null=True)
 
     right_url = models.URLField(default="/")
     right_image = models.URLField(
         default="http://cdn7.bigcommerce.com/s-viqdwewl26/stencil/8f903ed0-76e7-0135-12e4-525400970412/"
                 "icons/icon-no-image.svg")
-    right_title = models.CharField(max_length=24, default="")
+    right_title = models.CharField(max_length=24, default="", blank=True, null=True)
 
     created = models.DateTimeField(editable=False, null=True)
     edited = models.DateTimeField(null=True)

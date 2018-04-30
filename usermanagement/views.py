@@ -5,6 +5,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
 from django.views import generic
 from usermanagement.forms import RegisterForm
+from usermanagement.models import Members
 
 
 class CLoginView(SuccessMessageMixin, LoginView):
@@ -46,3 +47,10 @@ class CPasswordResetConfirmView(PasswordResetConfirmView):
 
 class CPasswordResetCompleteView(PasswordResetCompleteView):
     pass
+
+
+class ContactView(generic.TemplateView):
+    template_name = 'usermanagement/contact.html'
+
+    def members(self):
+        return Members.objects.all()

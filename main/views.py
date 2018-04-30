@@ -34,6 +34,7 @@ class ArticleView(generic.DetailView):
         return context
 
 
+
 class HighscoreView(generic.ListView):
     model = HighScores
     queryset = HighScores.objects.values('username').annotate(max_score=Max('score')).order_by('-max_score')
