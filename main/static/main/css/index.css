@@ -7,8 +7,11 @@
 
 }
 
-.spotlight-item img {
+.spotlight-item .img {
     max-width: 100%;
+    height: 400px;
+    background: no-repeat 50% 50%;
+    background-size: cover;
 }
 
 .spotlight-item {
@@ -35,8 +38,12 @@
 
 @media only screen and (max-width: 993px) {
     .row .spotlight-item {
-        margin: auto;
         float: unset;
+        margin: auto auto 1em;
+    }
+
+    .spotlight-item .img {
+        height: 300px;
     }
 
     .spotlight-item span {
@@ -51,5 +58,9 @@
 
     .spotlight-item span {
         font-size: 2em;
+    }
+
+    .spotlight-item .img {
+        height: 200px;
     }
 }
