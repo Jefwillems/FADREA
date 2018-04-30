@@ -126,3 +126,43 @@ ul li {
         font-size: 3rem;
     }
 }
+
+@keyframes slideout {
+    0% {
+        transform: translateY(0);
+    }
+    20% {
+        transform: translateY(-20px);
+    }
+    100% {
+        transform: translateY(-100px);
+    }
+}
+
+.msg-box {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    margin: auto;
+    height: 75px;
+    left: 0;
+    top: 0;
+    right: 0;
+    width: 600px;
+    background-color: rgba(86, 144, 255, 0.32);
+    padding: 10px 10%;
+    border-radius: 10px;
+    /*animation-delay: 2s;*/
+    /*animation-name: slide-out;*/
+    /*-webkit-animation: 2.5s linear;*/
+    /*-o-animation: 2.5s linear;*/
+    /*animation: 2.5s linear;*/
+    animation: slideout 3s linear;
+}
+
+.msg-box span {
+    font-size: 2rem;
+    text-align: center;
+}
