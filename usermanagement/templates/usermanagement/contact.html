@@ -7,15 +7,18 @@
 
 {% block content %}
     {% with view.contact as contact %}
-        <div class="biography">
-            {{ contact.biography|show_markdown|safe }}
+        <div class="container">
+            <div class="biography">
+                {{ contact.biography|show_markdown|safe }}
+            </div>
+            <div class="members">
+                <ul>
+                    {% for member in contact.members.all %}
+                        <li>{{ member.full_name }}{{ member.functie }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
         </div>
-        <div class="members">
-            <ul>
-                {% for member in contact.members.all %}
-                    <li>{{ member.full_name }}{{ member.functie }}</li>
-                {% endfor %}
-            </ul>
-        </div>
+
     {% endwith %}
 {% endblock %}
