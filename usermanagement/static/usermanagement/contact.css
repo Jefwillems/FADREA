@@ -3,6 +3,6 @@ ul li {
     list-style-type: disc !important;
 }
 
-.biography {
-
+.members li p b {
+    font-weight: 500;
 }

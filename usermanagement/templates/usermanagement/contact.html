@@ -14,7 +14,9 @@
             <div class="members">
                 <ul>
                     {% for member in contact.members.all %}
-                        <li>{{ member.full_name }}{{ member.functie }}</li>
+                        <li>
+                            <p><b>{{ member.full_name }}: </b>{{ member.functie }}</p>
+                        </li>
                     {% endfor %}
                 </ul>
             </div>
