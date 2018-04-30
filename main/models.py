@@ -30,7 +30,7 @@ class Post(PolymorphicModel):
             self.created = timezone.now()
         self.edited = timezone.now()
         if not self.slug:
-            self.slug = slugify(self.title + str(timezone.now().timestamp())[-5:])
+            self.slug = slugify((self.title + str(timezone.now().timestamp())[-5:])[:40])
         super(Post, self).save(*args, **kwargs)
 
 
@@ -63,7 +63,7 @@ class Article(models.Model):
             self.created = timezone.now()
         self.edited = timezone.now()
         if not self.slug:
-            self.slug = slugify(self.title + str(timezone.now().timestamp())[-5:])
+            self.slug = slugify((self.title + str(timezone.now().timestamp())[-5:])[:40])
         super(Article, self).save(*args, **kwargs)
 
     def __str__(self):
@@ -80,7 +80,7 @@ class Artist(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            self.slug = slugify(self.name)
+            self.slug = slugify(self.name[:40])
         super(Artist, self).save(*args, **kwargs)
 
     def __str__(self):
