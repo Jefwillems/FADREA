@@ -11,7 +11,7 @@ class ProfileAdmin(admin.ModelAdmin):
     ]
 
 
-class MemberInline(admin.StackedInline):
+class MemberInline(admin.TabularInline):
     model = Members
     extra = 0
     verbose_name = 'Member'

@@ -24,6 +24,12 @@ class Members(models.Model):
         name = '%s %s' % (self.first_name, self.last_name)
         return name.strip()
 
+    def __str__(self):
+        return self.full_name()
+
 
 class Contact(models.Model):
     biography = MarkdownxField()
+
+    def __str__(self):
+        return 'Contact info'
