@@ -9,15 +9,13 @@
             <div class="col s12 m6 l4 article-container">
                 <div class="article-image">
                     <a href="{% url 'article-detail' article.slug %}">
-                        <img src="{{ article.image }}"
-                             alt="{{ article.title }} thumbnail">
-
+                        <div class="img" style='background-image: url("{{ article.image }}")'>
+                            <div><span>{{ article.title }}</span></div>
+                        </div>
                     </a>
                 </div>
                 <div class="article-info">
-                    <p class="article-title"><a href="{% url 'article-detail' article.slug %}">{{ article.title }}</a>
-                    </p>
-                    <p>{{ article.created|date }}</p>
+                    <p class="created">{{ article.created|date }}</p>
                 </div>
             </div>
         {% endfor %}

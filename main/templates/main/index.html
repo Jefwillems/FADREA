@@ -23,13 +23,13 @@
         {% with view.spotlight as s %}
             <div class="col s12 m8 l6 spotlight-item">
                 <a href="{{ s.left_url }}">
-                    <div class="img" style='background-image: url("{{ s.left_image }}")'>&nbsp;</div>
+                    <div class="slimg" style='background-image: url("{{ s.left_image }}")'>&nbsp;</div>
                     <span>{{ s.left_title }}</span>
                 </a>
             </div>
             <div class="col s12 m8 l6 spotlight-item">
                 <a href="{{ s.right_url }}">
-                    <div class="img" style='background-image: url("{{ s.right_image }}")'>&nbsp;</div>
+                    <div class="slimg" style='background-image: url("{{ s.right_image }}")'>&nbsp;</div>
                     <span>{{ s.right_title }}</span>
                 </a>
             </div>
@@ -42,15 +42,13 @@
                 <div class="col s12 m6 l4 article-container">
                     <div class="article-image">
                         <a href="{% url 'article-detail' article.slug %}">
-                            <img src="{{ article.image }}"
-                                 alt="{{ article.title }} thumbnail">
+                            <div class="img" style='background-image: url("{{ article.image }}")'>
+                                <div><span>{{ article.title }}</span></div>
+                            </div>
                         </a>
                     </div>
                     <div class="article-info">
-                        <p class="article-title"><a
-                                href="{% url 'article-detail' article.slug %}">{{ article.title }}</a>
-                        </p>
-                        <p>{{ article.created|date }}</p>
+                        <p class="created">{{ article.created|date }}</p>
                     </div>
                 </div>
             {% endfor %}
