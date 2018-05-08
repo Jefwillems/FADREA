@@ -12,8 +12,9 @@
                 <div class="col s12 m6 l4 artist-container">
                     <div class="artist-image">
                         <a href="{% url 'artist-detail' artist.slug %}">
-                            <img src="{{ artist.image }}"
-                                 alt="{{ artist.name }} thumbnail">
+                            <div class="img" style='background-image: url("{{ artist.image }}")'>
+                                <div><span>{{ artist.title }}</span></div>
+                            </div>
                         </a>
                     </div>
                     <div class="artist-info">
